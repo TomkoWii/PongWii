@@ -8,9 +8,8 @@ jobs:
     container: devkitpro/devkitppc
     steps:
       - uses: actions/checkout@v4
-      - name: Install Wii libraries
-        run: dkp-pacman -Syu --noconfirm wii-dev
-      - name: Build
+      
+      - name: Build Homebrew
         run: make
       - name: Package
         run: |
