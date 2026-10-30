@@ -1,4 +1,4 @@
-name: Build Wii Pong
+name: Debug Wii Pong Build
 
 on:
   push:
@@ -10,39 +10,49 @@ jobs:
     container: devkitpro/devkitppc
     defaults:
       run:
-        shell: bash -l {0} # Dôležité pre správne načítanie prostredia devkitPro
+        shell: bash -l {0} # Force login shell to load devkitPro paths
     steps:
       - uses: actions/checkout@v4
 
-      - name: Zobrazenie štruktúry pred buildom
+      - name: 1. Check Project Structure
         run: |
-          echo "=== SÚBORY V PROJEKTE ==="
-          ls -R
+          echo "=== CURRENT DIRECTORY ==="
+          pwd
+          echo "=== ALL FILES IN PROJECT ==="
+          find . -maxdepth 3
+          echo "=== ENVIRONMENT VARIABLES ==="
+          echo "DEVKITPRO: $DEVKITPRO"
+          echo "DEVKITPPC: $DEVKITPPC"
 
-      - name: Build App
+      - name: 2. Run Compilation
         run: |
-          # Ak tvoj Makefile vyžaduje priečinok 'build', vytvorí sa. Ak nie, make zbehne v roote.
-          mkdir -p build
-          make clean || true
-          make
+          echo "=== RUNNING MAKE CLEAN ==="
+          make clean || echo "make clean failed or not supported"
           
-          echo "=== SÚBORY PO BUILDE ==="
-          ls -R
+          echo "=== RUNNING MAKE ==="
+          make V=1
+          
+          echo "=== STRUCTURE AFTER BUILD ==="
+          find . -maxdepth 3
 
-      - name: Package
+      - name: 3. Package Application
         run: |
           mkdir -p out/apps/wiipong
           
-          # Skúsi nájsť a skopírovať .dol súbor z rootu alebo z priečinka build
-          if [ -f *.dol ]; then
-            cp *.dol out/apps/wiipong/boot.dol
-          elif [ -f build/*.dol ]; then
-            cp build/*.dol out/apps/wiipong/boot.dol
+          # Find any generated .dol or .elf files
+          DOL_FILE=$(find . -name "*.dol" | head -n 1)
+          ELF_FILE=$(find . -name "*.elf" | head -n 1)
+          
+          if [ ! -z "$DOL_FILE" ]; then
+            echo "Found DOL file: $DOL_FILE"
+            cp "$DOL_FILE" out/apps/wiipong/boot.dol
+          elif [ ! -z "$ELF_FILE" ]; then
+            echo "Found ELF file ($ELF_FILE). Converting to DOL..."
+            elf2dol "$ELF_FILE" out/apps/wiipong/boot.dol
           else
-            echo "Kompilácia nevytvorila žiadny .dol súbor!"
+            echo "ERROR: No .dol or .elf files were created by the compiler!"
           fi
           
-          # Skopíruje meta.xml, ak existuje
           if [ -f meta.xml ]; then 
             cp meta.xml out/apps/wiipong/
           fi
