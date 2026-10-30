@@ -10,21 +10,42 @@ jobs:
     container: devkitpro/devkitppc
     defaults:
       run:
-        shell: bash -l {0} # Vynúti načítanie devkitPPC prostredia (path/premenné)
+        shell: bash -l {0} # Dôležité pre správne načítanie prostredia devkitPro
     steps:
       - uses: actions/checkout@v4
 
+      - name: Zobrazenie štruktúry pred buildom
+        run: |
+          echo "=== SÚBORY V PROJEKTE ==="
+          ls -R
+
       - name: Build App
         run: |
+          # Ak tvoj Makefile vyžaduje priečinok 'build', vytvorí sa. Ak nie, make zbehne v roote.
           mkdir -p build
-          cd build
-          make -f ../Makefile
+          make clean || true
+          make
+          
+          echo "=== SÚBORY PO BUILDE ==="
+          ls -R
 
       - name: Package
         run: |
           mkdir -p out/apps/wiipong
-          cp build/boot.dol out/apps/wiipong/boot.dol
-          if [ -f meta.xml ]; then cp meta.xml out/apps/wiipong/; fi
+          
+          # Skúsi nájsť a skopírovať .dol súbor z rootu alebo z priečinka build
+          if [ -f *.dol ]; then
+            cp *.dol out/apps/wiipong/boot.dol
+          elif [ -f build/*.dol ]; then
+            cp build/*.dol out/apps/wiipong/boot.dol
+          else
+            echo "Kompilácia nevytvorila žiadny .dol súbor!"
+          fi
+          
+          # Skopíruje meta.xml, ak existuje
+          if [ -f meta.xml ]; then 
+            cp meta.xml out/apps/wiipong/
+          fi
 
       - uses: actions/upload-artifact@v4
         with:
