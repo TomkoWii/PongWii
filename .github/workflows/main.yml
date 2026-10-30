@@ -11,11 +11,11 @@ jobs:
       
       - name: Build Homebrew
         run: make
-      - name: Package
-        run: |
-          mkdir -p out/apps/wiipong
-          cp boot.dol meta.xml out/apps/wiipong/
+            - name: Package
+        run: mkdir -p out/apps/wiipong && (cp build/*.dol out/apps/wiipong/boot.dol || cp *.dol out/apps/wiipong/boot.dol) && cp meta.xml out/apps/wiipong/
+      - uses: actions/checkout@v4
       - uses: actions/upload-artifact@v4
         with:
           name: wiipong
           path: out
+          
