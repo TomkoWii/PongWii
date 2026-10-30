@@ -1,4 +1,4 @@
-.SUFFIXES:
+SUFFIXES:
 ifeq ($(strip $(DEVKITPPC)),)
 $(error Set DEVKITPPC)
 endif
@@ -11,7 +11,8 @@ BUILD   := build
 SOURCES := source
 CFLAGS  := -g -O2 -Wall $(MACHDEP) -I$(LIBOGC_INC)
 LDFLAGS := -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
-LIBS    := -lwiiuse -lbte -logc -lm
+# SEM SME PRIDALI -lasnd:
+LIBS    := -lwiiuse -lbte -lasnd -logc -lm
 
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 export OUTPUT := $(CURDIR)/$(TARGET)
