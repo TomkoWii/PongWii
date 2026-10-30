@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <app version="1">
   <name>Wii Pong</name>
+  <version>0.1</version>
   <coder>TomkoWii</coder>
-  <version>1.0</version>
-  <short_description>Pong pre Wii</short_description>
-  <long_description>Mier Wiimotom alebo použi krížový ovládač. Prvý do 7 vyhráva. A = nová hra, Home = koniec. Nový Update! Farebná obrazovka, ľahšie ovládanie, ovládanie s nunchukom a namiesto bodiek ako body sú čísla. Teším sa, že si zahráte túto hru. Čaute!</long_description>
+  <short_description>Farebny Pong so zvukom a Nunchukom</short_description>
+  <long_description>Wii Pong Beta v0.1. Pridané YUV422 modré a zelené farby, digitálne skóre namiesto bodiek, retro ASND zvuky a plynulé ovládanie pálky pomocou analógovej páčky na Nunchuku!</long_description>
+  <release_date>202610301505</release_date>
 </app>
+
