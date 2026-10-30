@@ -1,24 +1,30 @@
 name: Build Wii Pong
+
 on:
   push:
   workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
     container: devkitpro/devkitppc
+    defaults:
+      run:
+        shell: bash -l {0} # Vynúti načítanie devkitPPC prostredia (path/premenné)
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build
+      - name: Build App
         run: |
           mkdir -p build
-          make -C build -f ../Makefile boot.dol
+          cd build
+          make -f ../Makefile
 
       - name: Package
         run: |
           mkdir -p out/apps/wiipong
           cp build/boot.dol out/apps/wiipong/boot.dol
-          cp meta.xml out/apps/wiipong/
+          if [ -f meta.xml ]; then cp meta.xml out/apps/wiipong/; fi
 
       - uses: actions/upload-artifact@v4
         with:
