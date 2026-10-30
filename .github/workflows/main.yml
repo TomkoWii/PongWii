@@ -8,12 +8,13 @@ jobs:
     container: devkitpro/devkitppc
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Build Homebrew
         run: make
-            - name: Package
-        run: mkdir -p out/apps/wiipong && (cp build/*.dol out/apps/wiipong/boot.dol || cp *.dol out/apps/wiipong/boot.dol) && cp meta.xml out/apps/wiipong/
-      - uses: actions/checkout@v4
+
+      - name: Package
+        run: mkdir -p out/apps/wiipong && (cp build/*.dol out/apps/wiipong/boot.dol || cp *.dol out/apps/wiipong/boot.dol || cp boot.dol out/apps/wiipong/boot.dol) && cp meta.xml out/apps/wiipong/
+
       - uses: actions/upload-artifact@v4
         with:
           name: wiipong
