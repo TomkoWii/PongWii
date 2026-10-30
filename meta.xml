@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <app version="1">
   <name>Wii Pong</name>
-  <coder>Ty</coder>
+  <coder>TomkoWii</coder>
   <version>1.0</version>
   <short_description>Pong pre Wii</short_description>
-  <long_description>Mier Wiimotom alebo použi krížový ovládač. Prvý do 7 vyhráva. A = nová hra, Home = koniec.</long_description>
+  <long_description>Mier Wiimotom alebo použi krížový ovládač. Prvý do 7 vyhráva. A = nová hra, Home = koniec. Nový Update! Farebná obrazovka, ľahšie ovládanie, ovládanie s nunchukom a namiesto bodiek ako body sú čísla. Teším sa, že si zahráte túto hru. Čaute!</long_description>
 </app>
